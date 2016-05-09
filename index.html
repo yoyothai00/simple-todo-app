@@ -1,27 +1,40 @@
 <!doctype html>
-<html ng-app="todoApp">
-  <head>
-    <!-- CSS file -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="src/css/todo.css">
-  </head>
-  <body>
-    <!-- Import scripts -->
-    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<html ng-app="hci">
 
-    <!-- App controller -->
-    <script src="src/js/controller/todo.js"></script>
-    <script src="src/js/route/route.js"></script>
+<head>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+  <link rel="stylesheet" href="src/css/hci.css">
+</head>
 
-    <!-- some navigation -->
-    <ul class="nav nav-pills">
-    <li role="presentation"><a ui-sref="home">Home</a></li>
-    <li role="presentation"><a ui-sref="changepage">Change Page</a></li>
-  </ul>
+<body ng-controller="HciController">
+  <!-- Import scripts -->
+  <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-aria/angular-aria.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
+  <script src="bower_components/angular-material/angular-material.js"></script>
+  <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <!-- App controller -->
+  <script src="src/js/hci.js"></script>
+  <script src="src/js/route/route.js"></script>
+  <!-- Services -->
+  <script src="src/js/service/ApiCourse.js"></script>
+  <!-- Controller -->
+  <script src="src/js/controller/HomeController.js"></script>
 
-    <div ui-view></div>
-  </body>
+  <md-toolbar class="md-whiteframe-glow-z1 site-content-toolbar">
+    <div class="md-toolbar-tools">
+      <h2>
+          <span style="color: #202020">KU Regis</span>
+          <span ng-repeat="name in paths"> > {{name}} </span>
+      </h2>
+    </div>
+  </md-toolbar>
+
+  <div ui-view></div>
+  
+  <!-- Data -->
+  <script src="src/js/data/course.js"></script>
+</body>
+
 </html>

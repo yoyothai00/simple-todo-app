@@ -1,17 +1,16 @@
-angular.module('todoApp')
+angular.module('hci')
 .config(function($stateProvider, $urlRouterProvider) {
-  //
-  // For any unmatched url, redirect to /home
+  
   $urlRouterProvider.otherwise("/home");
-  //
-  // Now set up the states
+  
   $stateProvider
     .state('home', {
       url: "/home",
-      templateUrl: "src/view/home.tmpl"
+      controller: "HomeController",
+      templateUrl: "src/view/home.html"
     })
-    .state('changepage', {
-      url: "/changepage",
-      templateUrl: "src/view/changepage.tmpl"
-    })
+    .state('login', {
+      url: "/login",
+      templateUrl: "src/view/login.html"
+    });
 });
