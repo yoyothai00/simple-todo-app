@@ -14,6 +14,9 @@
   <script src="bower_components/angular-animate/angular-animate.js"></script>
   <script src="bower_components/angular-material/angular-material.js"></script>
   <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script src="bower_components/ngstorage/ngStorage.min.js"></script>
+  <script src="bower_components/angular-messages/angular-messages.min.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
   <!-- App controller -->
   <script src="src/js/hci.js"></script>
   <script src="src/js/route/route.js"></script>
@@ -21,18 +24,24 @@
   <script src="src/js/service/ApiCourse.js"></script>
   <!-- Controller -->
   <script src="src/js/controller/HomeController.js"></script>
+  <script src="src/js/controller/LoginController.js"></script>
 
   <md-toolbar class="md-whiteframe-glow-z1 site-content-toolbar">
     <div class="md-toolbar-tools">
-      <h2>
-          <span style="color: #202020">KU Regis</span>
-          <span ng-repeat="name in paths"> > {{name}} </span>
-      </h2>
+      <div flex-offset="20" flex layout="row" layout-align="start center" style="color: #696969">
+        <p>Class Enrollement</p>
+        <p ng-repeat="name in paths">&nbsp> {{name}}</p>
+      </div>
+      <div flex layout="row" layout-align="end center">
+        <md-button class="md-raised" ng-click="goto('home')">Enroll</md-button>
+        <md-button class="md-raised" ng-click="goto('profile')">Profile</md-button>
+        <md-button class="md-raised md-warn" ng-click="logout()">Logout</md-button>
+      </div>
     </div>
   </md-toolbar>
 
   <div ui-view></div>
-  
+
   <!-- Data -->
   <script src="src/js/data/course.js"></script>
 </body>

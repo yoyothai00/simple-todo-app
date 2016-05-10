@@ -1,18 +1,25 @@
 angular.module('hci')
-  .controller('HomeController', function ($rootScope, $scope, $timeout, $q, ApiCourse) {
+  .controller('HomeController', function ($rootScope, $scope, $timeout, $q, $localStorage, $cookies, $window, ApiCourse) {
+
     var self = $scope;
     var apiCourse = new ApiCourse();
-    
+
+    $scope.userID = $cookies.get("userID");
+    $scope.storage = $localStorage;
+    $scope.storage[$scope.userID] = $localStorage[$scope.userID] || {};
+
     self.simulateQuery = false;
     self.isDisabled = false;
     self.states = loadAll();
     self.querySearch = querySearch;
+    self.selectedCourseID = "";
     self.selectedItemChange = selectedItemChange;
     self.searchTextChange = searchTextChange;
     self.loading = false;
-    
-    self.enrolledCourses = ["dddd", "ssss", "aaaa", "ffff", "gggg", "hhhh"];
-    
+
+    self.enrolledCourses = $scope.storage[$scope.userID].enrolled || [];
+    self.totalCredit = $scope.storage[$scope.userID].credit || 0;
+
     function querySearch(query) {
       var results = query ? self.states.filter(createFilterFor(query)) : self.states,
         deferred;
@@ -24,21 +31,21 @@ angular.module('hci')
         return results;
       }
     }
-    
+
     function searchTextChange(text) {
       $scope.loading = false;
     }
-    
+
     function selectedItemChange(item) {
-      if(!!!item){ $scope.loading = false; return ;}
-      
+      if (!!!item) { $scope.loading = false; return; }
+
       $scope.loading = true;
-      $scope.courses = [];
-      $scope.courses.code = item.value;
-      apiCourse.getInfo(item.value).then(function(resp){
+      $scope.selectedCourseID = item.value;
+      apiCourse.getInfo($scope.selectedCourseID).then(function (resp) {
         $scope.courses = resp.data;
         $scope.loading = false;
-      }, function(resp){
+      }, function (resp) {
+        $scope.courses = [];
         $scope.loading = false;
         alert("Course not found");
       });
@@ -58,9 +65,29 @@ angular.module('hci')
       return function filterFn(state) {
         return (state.value.indexOf(lowercaseQuery) === 0);
       };
-    }
+    };
+
+    self.enroll = function (sec) {
+      $scope.enrolledCourses.unshift({
+        id: $scope.selectedCourseID,
+        name: courses[$scope.selectedCourseID].name.en,
+        sec: sec
+      });
+
+      self.totalCredit += courses[$scope.selectedCourseID].credit.total;
+
+      $scope.storage[$scope.userID].enrolled = $scope.enrolledCourses;
+      $scope.storage[$scope.userID].credit = self.totalCredit;
+    };
+
+    self.drop = function (index, id) {
+      $scope.enrolledCourses.splice(index, 1);
+
+      self.totalCredit -= courses[id].credit.total;
+
+      $scope.storage[$scope.userID].enrolled = $scope.enrolledCourses;
+      $scope.storage[$scope.userID].credit = self.totalCredit;
+    };
     
-    self.enroll = function(id){
-      console.log(id);
-    }
+    $rootScope.paths = ["Enroll"];
   });
